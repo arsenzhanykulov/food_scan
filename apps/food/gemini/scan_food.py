@@ -3,7 +3,8 @@ from collections import OrderedDict
 
 import PIL.Image
 from django.conf import settings
-from rest_framework.parsers import MultiPartParser
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -12,7 +13,8 @@ from .services import get_food_analysis
 
 
 class ImageAnalyzeView(APIView):
-    parser_classes = [MultiPartParser]
+    parser_classes = [MultiPartParser, FormParser]
+    permission_classes = [AllowAny]
 
     def post(self, request):
         file = request.FILES.get("image")
