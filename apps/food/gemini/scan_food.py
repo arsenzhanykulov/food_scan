@@ -1,17 +1,29 @@
-import json
-from collections import OrderedDict
-
 import PIL.Image
-from django.conf import settings
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from drf_spectacular.utils import extend_schema
+
 from .serializers import FoodAnalysisSerializer
 from .services import get_food_analysis
 
 
+@extend_schema(
+    request={
+        "multipart/form-data": {
+            "type": "object",
+            "properties": {
+                "image": {
+                    "description": "Изображение для анализа (JPG, PNG, JPEG)",
+                }
+            },
+        }
+    },
+    description="Загрузите фото еды для анализа питания",
+    summary="Анализ изображения с едой",
+)
 class ImageAnalyzeView(APIView):
     parser_classes = [MultiPartParser, FormParser]
     permission_classes = [AllowAny]

@@ -5,10 +5,26 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
+from drf_spectacular.utils import extend_schema
 
 from apps.user.models import Provider, User
 
-
+@extend_schema(
+    request={
+        'application/json': {
+            'type': 'object',
+            'properties': {
+                'token': {
+                    'type': 'string',
+                    'description': 'Apple ID токен'
+                }
+            },
+            'required': ['token']
+        }
+    },
+    description="Аутентификация через Apple",
+    summary="Apple Login"
+)
 class AppleLoginAPIView(APIView):
     permission_classes = [AllowAny]
 

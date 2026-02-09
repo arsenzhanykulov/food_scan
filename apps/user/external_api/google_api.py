@@ -1,13 +1,29 @@
 import requests
-from django.contrib.auth import login
+
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
+from drf_spectacular.utils import extend_schema
+
 
 from apps.user.models import Provider, User
 
-
+@extend_schema(
+    request={
+        'application/json': {
+            'type': 'object',
+            'properties': {
+                'token': {
+                    'type': 'string',
+                    'description': 'Google access токен'
+                }
+            },
+            'required': ['token']
+        }
+    },
+    description="Аутентификация через Apple",
+    summary="Google Login")
 class GoogleLoginAPIView(APIView):
     def post(self, request):
         access_token = request.data.get("token")
