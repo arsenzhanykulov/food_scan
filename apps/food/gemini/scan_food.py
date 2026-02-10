@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 
 from drf_spectacular.utils import extend_schema
 
-from .serializers import FoodAnalysisSerializer
+from .serializers import FoodAnalysisResponseSerializer
 from .services import get_food_analysis
 
 
@@ -30,14 +30,28 @@ class ImageAnalyzeView(APIView):
 
     def post(self, request):
         file = request.FILES.get("image")
-        if not file:
-            return Response({"error": "No image provided"}, status=400)
         img = PIL.Image.open(file)
-        try:
-            result_data = get_food_analysis(img)
-        except Exception as e:
-            return Response({"error": f"AI analysis failed: {str(e)}"}, status=500)
 
-        serializer = FoodAnalysisSerializer(data=result_data)
-        if serializer.is_valid():
-            return Response(serializer.data)
+        max_retries = 2
+        error_to_send = None
+        for attempt in range(max_retries):
+            try:
+                result_data = get_food_analysis(img, error_context=error_to_send)
+
+                serializer = FoodAnalysisResponseSerializer(data=result_data)
+                if serializer.is_valid():
+                    return Response(serializer.data)
+
+                error_to_send = str(serializer.errors)
+                print(f"Попытка {attempt + 1} провалена. Ошибки: {error_to_send}")
+
+            except Exception as e:
+                return Response({"error": f"AI error: {str(e)}"}, status=500)
+
+        return Response(
+            {
+                "error": "Не удалось получить валидный JSON после исправлений",
+                "details": error_to_send,
+            },
+            status=400,
+        )

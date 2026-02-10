@@ -9,21 +9,20 @@ from drf_spectacular.utils import extend_schema
 
 from apps.user.models import Provider, User
 
+
 @extend_schema(
     request={
-        'application/json': {
-            'type': 'object',
-            'properties': {
-                'token': {
-                    'type': 'string',
-                    'description': 'Google access токен'
-                }
+        "application/json": {
+            "type": "object",
+            "properties": {
+                "token": {"type": "string", "description": "Google access токен"}
             },
-            'required': ['token']
+            "required": ["token"],
         }
     },
     description="Аутентификация через Apple",
-    summary="Google Login")
+    summary="Google Login",
+)
 class GoogleLoginAPIView(APIView):
     def post(self, request):
         access_token = request.data.get("token")

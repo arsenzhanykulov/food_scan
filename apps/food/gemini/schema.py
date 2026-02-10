@@ -27,18 +27,21 @@ class Ingredient(typing.TypedDict):
 
 class ShouldEat(typing.TypedDict):
     verdict: str
-    verdict: Literal[
-        "Отличный выбор", "Хороший выбор", "Не рекомендуется", "Опасно: избегайте"
-    ]
+    verdict: Literal["Отличный выбор", "Хороший выбор", "Не рекомендуется", "Избегайте"]
 
 
-class FoodAnalysisResponse(typing.TypedDict):
-    name: str
-    category: str
-    summary_note: str
+class AnalyzeData(typing.TypedDict):
     rating: Rating
     should_eat: ShouldEat
     why_this_score: list[WhyThisScore]
     nutrition: list[NutritionItem]
     ingredients: list[Ingredient]
     recommendation: str
+
+
+class FoodAnalysisResponse(typing.TypedDict):
+    name: str
+    category: str
+    health_score: int
+    summary_note: str
+    analyze_data: AnalyzeData

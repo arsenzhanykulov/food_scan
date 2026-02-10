@@ -9,21 +9,19 @@ from drf_spectacular.utils import extend_schema
 
 from apps.user.models import Provider, User
 
+
 @extend_schema(
     request={
-        'application/json': {
-            'type': 'object',
-            'properties': {
-                'token': {
-                    'type': 'string',
-                    'description': 'Apple ID токен'
-                }
+        "application/json": {
+            "type": "object",
+            "properties": {
+                "token": {"type": "string", "description": "Apple ID токен"}
             },
-            'required': ['token']
+            "required": ["token"],
         }
     },
     description="Аутентификация через Apple",
-    summary="Apple Login"
+    summary="Apple Login",
 )
 class AppleLoginAPIView(APIView):
     permission_classes = [AllowAny]
