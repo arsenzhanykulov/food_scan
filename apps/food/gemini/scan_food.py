@@ -8,6 +8,8 @@ from drf_spectacular.utils import extend_schema
 
 from .serializers import FoodAnalysisResponseSerializer
 from .services import get_food_analysis
+from ..models import Product
+from apps.user.models import User
 
 
 @extend_schema(
@@ -34,12 +36,25 @@ class ImageAnalyzeView(APIView):
 
         max_retries = 2
         error_to_send = None
+
         for attempt in range(max_retries):
             try:
                 result_data = get_food_analysis(img, error_context=error_to_send)
 
                 serializer = FoodAnalysisResponseSerializer(data=result_data)
+
                 if serializer.is_valid():
+                    Product.objects.create(
+                        user=User.objects.first(),
+                        name=result_data["name"],
+                        category=result_data.get("category", ""),
+                        health_score=result_data["health_score"],
+                        summary_note=result_data.get("summary_note", ""),
+                        image=file,
+                        analysis_data=result_data,
+                        is_active=False,
+                    )
+
                     return Response(serializer.data)
 
                 error_to_send = str(serializer.errors)

@@ -31,35 +31,22 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 # База данных
-if DEBUG:
-    # SQLite для локальной разработки
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("DB_NAME", "foodscan"),
+        "USER": os.getenv("DB_USER", "foodscan_user"),
+        "PASSWORD": os.getenv("DB_PASSWORD", "strongpassword"),
+        "HOST": os.getenv("DB_HOST", "localhost"),
+        "PORT": os.getenv("DB_PORT", "5432"),
     }
-else:
-    # MySQL для production
-    DATABASES = {
-        "default": {
-            "ENGINE": os.getenv("DB_ENGINE", default="django.db.backends.mysql"),
-            "NAME": os.getenv("DB_NAME"),
-            "USER": os.getenv("DB_USER"),
-            "PASSWORD": os.getenv("DB_PASSWORD"),
-            "HOST": os.getenv("DB_HOST", default="localhost"),
-            "PORT": os.getenv("DB_PORT", default="3306"),
-            "OPTIONS": {
-                "charset": "utf8mb4",
-                "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
-            },
-        }
-    }
+}
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    "jazzmin",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -201,3 +188,20 @@ GEMINI_MODEL = os.getenv("GEMINI_MODEL")
 AUTH_USER_MODEL = "user.User"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Food Scan Admin",
+    "site_header": "Food Scan",
+    "site_brand": "Food Scan AI",
+    "welcome_sign": "Добро пожаловать в панель управления Food Scan",
+    "copyright": "Food Scan Ltd",
+    "search_model": ["auth.User", "food.FoodAnalysis"],  # Быстрый поиск
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "icons": {
+        "auth": "fas fa-users-cog",
+        "auth.user": "fas fa-user",
+        "food.FoodAnalysis": "fas fa-utensils",  # Иконка еды
+    },
+}
