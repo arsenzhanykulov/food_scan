@@ -44,7 +44,7 @@ class AppleLoginAPIView(APIView):
             defaults={
                 "email": payload.get("email"),
                 "provider": Provider.APPLE,
-                "is_active": False,
+                "is_active": True,
             },
         )
 
