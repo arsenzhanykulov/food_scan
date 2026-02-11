@@ -6,10 +6,9 @@ from rest_framework.views import APIView
 
 from drf_spectacular.utils import extend_schema
 
-from .serializers import FoodAnalysisResponseSerializer
+from .serializers import FoodAnalysisResponseSerializer, ProductSerializer
 from .services import get_food_analysis
 from ..models import Product
-from apps.user.models import User
 
 
 @extend_schema(
@@ -58,7 +57,7 @@ class ImageAnalyzeView(APIView):
                         is_active=False,
                     )
 
-                    response_serializer = FoodAnalysisResponseSerializer(product)
+                    response_serializer = ProductSerializer(product)
                     return Response(response_serializer.data, status=201)
 
                 error_to_send = str(serializer.errors)

@@ -44,4 +44,4 @@ class FoodAnalysisResponse(typing.TypedDict):
     category: str
     health_score: int
     summary_note: str
-    analyze_data: AnalyzeData
+    analysis_data: AnalyzeData

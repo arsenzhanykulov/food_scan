@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from ..models import Product
 
 
 class AnalyzeDataSerializer(serializers.Serializer):
@@ -11,9 +12,22 @@ class AnalyzeDataSerializer(serializers.Serializer):
 
 
 class FoodAnalysisResponseSerializer(serializers.Serializer):
-    id = serializers.IntegerField()
     name = serializers.CharField(max_length=60)
     category = serializers.CharField(max_length=60)
     health_score = serializers.IntegerField(min_value=0, max_value=100)
     summary_note = serializers.CharField(max_length=255)
-    analyze_data = AnalyzeDataSerializer()
+    analysis_data = AnalyzeDataSerializer()
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = (
+            "id",
+            "name",
+            "category",
+            "health_score",
+            "summary_note",
+            "created_at",
+            "analysis_data"
+        )
