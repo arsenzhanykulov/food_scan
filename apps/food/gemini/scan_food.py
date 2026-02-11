@@ -1,6 +1,6 @@
 import PIL.Image
 from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -31,7 +31,7 @@ from apps.user.models import User
 )
 class ImageAnalyzeView(APIView):
     parser_classes = [MultiPartParser, FormParser]
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         file = request.FILES.get("image")
@@ -48,7 +48,7 @@ class ImageAnalyzeView(APIView):
 
                 if serializer.is_valid():
                     Product.objects.create(
-                        user=User.objects.first(),
+                        user=request.user,
                         name=result_data["name"],
                         category=result_data.get("category", ""),
                         health_score=result_data["health_score"],
