@@ -13,8 +13,9 @@ class ProductListView(ListAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Product.objects.all(
+        return Product.objects.filter(
             user=self.request.user,
+            is_active=True,
         ).order_by("-created_at")
 
 class ProductDetailView(RetrieveAPIView):

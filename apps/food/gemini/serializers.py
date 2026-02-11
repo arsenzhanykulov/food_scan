@@ -11,6 +11,7 @@ class AnalyzeDataSerializer(serializers.Serializer):
 
 
 class FoodAnalysisResponseSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
     name = serializers.CharField(max_length=60)
     category = serializers.CharField(max_length=60)
     health_score = serializers.IntegerField(min_value=0, max_value=100)

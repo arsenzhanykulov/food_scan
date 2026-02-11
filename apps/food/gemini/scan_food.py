@@ -47,7 +47,7 @@ class ImageAnalyzeView(APIView):
                 serializer = FoodAnalysisResponseSerializer(data=result_data)
 
                 if serializer.is_valid():
-                    Product.objects.create(
+                    product = Product.objects.create(
                         user=request.user,
                         name=result_data["name"],
                         category=result_data.get("category", ""),
@@ -58,7 +58,8 @@ class ImageAnalyzeView(APIView):
                         is_active=False,
                     )
 
-                    return Response(serializer.data)
+                    response_serializer = FoodAnalysisResponseSerializer(product)
+                    return Response(response_serializer.data, status=201)
 
                 error_to_send = str(serializer.errors)
                 print(f"Попытка {attempt + 1} провалена. Ошибки: {error_to_send}")
