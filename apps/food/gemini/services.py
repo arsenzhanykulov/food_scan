@@ -90,10 +90,10 @@ def get_food_analysis(img, error_context=None):
                                         "verdict": {
                                             "type": "string",
                                             "enum": [
-                                                "Отличный выбор",
-                                                "Хороший выбор",
-                                                "Не рекомендуется",
-                                                "Избегайте",
+                                                "Excellent choice",
+                                                "Good choice",
+                                                "Not recommended",
+                                                "Avoid",
                                             ],
                                         }
                                     },
