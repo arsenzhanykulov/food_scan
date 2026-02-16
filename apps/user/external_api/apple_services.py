@@ -3,14 +3,13 @@ from jwt import PyJWKClient
 import ssl
 import certifi
 
-
 ssl_context = ssl.create_default_context(cafile=certifi.where())
 
 apple_jwks_client = PyJWKClient(
     "https://appleid.apple.com/auth/keys",
     cache_jwk_set=True,
     lifespan=86400,
-    ssl_context=ssl_context
+    ssl_context=ssl_context,
 )
 
 

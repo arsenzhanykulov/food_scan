@@ -29,5 +29,5 @@ class ProductSerializer(serializers.ModelSerializer):
             "health_score",
             "summary_note",
             "created_at",
-            "analysis_data"
+            "analysis_data",
         )

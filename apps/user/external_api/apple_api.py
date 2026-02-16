@@ -36,7 +36,7 @@ class AppleLoginAPIView(APIView):
         if not payload:
             return Response(
                 {"error": "Invalid or expired Apple token"},
-                status=status.HTTP_401_UNAUTHORIZED
+                status=status.HTTP_401_UNAUTHORIZED,
             )
 
         user, created = User.objects.get_or_create(
@@ -50,11 +50,14 @@ class AppleLoginAPIView(APIView):
 
         refresh = RefreshToken.for_user(user)
 
-        return Response({
-            "status": "success",
-            "is_new_user": created,
-            "tokens": {
-                "refresh": str(refresh),
-                "access": str(refresh.access_token),
+        return Response(
+            {
+                "status": "success",
+                "is_new_user": created,
+                "tokens": {
+                    "refresh": str(refresh),
+                    "access": str(refresh.access_token),
+                },
             },
-        }, status=status.HTTP_200_OK)
+            status=status.HTTP_200_OK,
+        )

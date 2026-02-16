@@ -181,7 +181,7 @@ SPECTACULAR_SETTINGS = {
 }
 
 # Gemini Settings
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 GEMINI_MODEL = os.getenv("GEMINI_MODEL")
 

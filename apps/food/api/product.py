@@ -18,6 +18,7 @@ class ProductListView(ListAPIView):
             is_active=True,
         ).order_by("-created_at")
 
+
 class ProductDetailView(RetrieveAPIView):
     serializer_class = ProductDetailSerializer
     permission_classes = [IsAuthenticated]
@@ -27,6 +28,7 @@ class ProductDetailView(RetrieveAPIView):
             user=self.request.user,
             is_active=True,
         )
+
 
 class ProductActivateView(APIView):
     permission_classes = [IsAuthenticated]
